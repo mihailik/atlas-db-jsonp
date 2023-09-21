@@ -1,4 +1,4 @@
-var cursors=(jsonp=>(typeof cursors==='function'?cursors(jsonp):0,cursors=cursors))({
+var cursors=(jsonp=>(typeof cursors==='function'?cursors(jsonp):0,cursors=jsonp))({
   "users": {
     "timestamp": 1693427085385,
     "oneByOne": "eswv73itwgpafxgnozr4nncu",
