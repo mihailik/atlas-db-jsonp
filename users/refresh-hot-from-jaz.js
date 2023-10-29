@@ -249,21 +249,35 @@ async function run() {
 }
 
 async function downloadAtlasBinary() {
-  return new Promise((resolve, reject) => {
-    const https = require('https');
-    https.get(JAZ_ATLAS_MIN, (resp) => {
-      const buffers = [];
-      resp.on('data', (chunk) => {
-        buffers.push(chunk);
-      });
-      resp.on('error', (err) => {
-        reject(err);
-      });
-      resp.on('end', () => {
-        resolve(Buffer.concat(buffers));
+
+  try {
+    const downl = await downloadFrom(JAZ_ATLAS_MIN);
+    if (downl.length) return downl;
+  } catch (error) {
+  }
+
+  return downloadFrom(
+    'https://corsproxy.io/?' +
+    JAZ_ATLAS_MIN
+  );
+
+  function downloadFrom(url) {
+    return new Promise((resolve, reject) => {
+      const https = require('https');
+      https.get(url, (resp) => {
+        const buffers = [];
+        resp.on('data', (chunk) => {
+          buffers.push(chunk);
+        });
+        resp.on('error', (err) => {
+          reject(err);
+        });
+        resp.on('end', () => {
+          resolve(Buffer.concat(buffers));
+        });
       });
     });
-  });
+  }
 }
 
 run();
